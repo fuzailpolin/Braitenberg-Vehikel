@@ -58,8 +58,8 @@ braitenberg-vehicles/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/braitenberg-vehicles.git
-cd braitenberg-vehicles
+git clone https://github.com/fuzailpolin/Braitenberg-Vehikel.git
+cd Braitenberg-Vehikel
 ```
 
 ### 2. Install Dependencies
@@ -76,9 +76,7 @@ python3 filename.py
 
 ---
 
-## 📸 Screenshots (optional)
-
-_Include screenshots or screen recordings here to demonstrate behavior._
+## 📸 Screenshots
 
 ---
 
@@ -98,7 +96,7 @@ _Include screenshots or screen recordings here to demonstrate behavior._
 Abu Fuzail Polin  
 👨‍🎓 MSc Artificial Intelligence, BTU Cottbus  
 💼 Passionate about Machine Learning, and autonomous behavior  
-📬 [fuzail.polin@gmail.com] (optional)
+📬 [fuzail.polin@gmail.com]
 
 ---
 
