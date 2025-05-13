@@ -42,13 +42,10 @@ class Vehicle:
 
         self.sensor_radius = 10
         self.sensor_offset = self.radius + self.sensor_radius
-
         self.sensor_color = GREEN
 
-        # Initial sensor positions
         self.left_sensor_position = self.position
         self.right_sensor_position = self.position
-        self.sensor_position = self.position
 
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.position, self.radius)
@@ -63,39 +60,47 @@ class Vehicle:
         self.left_sensor_position = self.position + forward * self.sensor_offset - right * self.sensor_spacing / 2
         self.right_sensor_position = self.position + forward * self.sensor_offset + right * self.sensor_spacing / 2
 
-        # Calculate distances to sun
-        left_distance = self.left_sensor_position.distance_to(sun_position)
-        right_distance = self.right_sensor_position.distance_to(sun_position)
+        # Simulate noisy sensors
+        left_distance = self.left_sensor_position.distance_to(sun_position) + random.uniform(-5, 5)
+        right_distance = self.right_sensor_position.distance_to(sun_position) + random.uniform(-5, 5)
 
-        # Prevent division by zero
         left_distance = max(left_distance, 0.01)
         right_distance = max(right_distance, 0.01)
 
-        # Calculate speeds based on sensor distances
+        # Calculate speeds
+        # this is fear
         left_speed = self.speed_scaling * (1 / left_distance)
         right_speed = self.speed_scaling * (1 / right_distance)
 
+        # #this is aggression
+        # left_speed = self.speed_scaling * (1 / right_distance)
+        # right_speed = self.speed_scaling * (1 / left_distance)
+
         speed = (left_speed + right_speed) / 2
-        rotation = (right_speed - left_speed) * self.rotation_scaling
+
+        # Making the vehicle wiggle by adding rotation to the direction
+        rotation_noise = random.uniform(-0.5, 0.5)
+        rotation = (right_speed - left_speed) * self.rotation_scaling + rotation_noise
         self.direction += rotation
+
+        # Sometimes it goes in random direction like an ant
+        if random.random() < 0.01:  # 0.01 indicates that there is 1% chance per frame
+            self.direction += random.uniform(-30, 30)
 
         direction = pygame.math.Vector2(0, -1).rotate(self.direction)
         self.position += direction * speed
         self.position.x %= WIDTH
         self.position.y %= HEIGHT
 
-        # Debug display
-        distance = (left_distance + right_distance) / 2
-        text = f"distance to sun: {distance:.2f} | speed: {speed:.2f}"
-        text_surface = font.render(text, True, WHITE)
+        avg_distance = (left_distance + right_distance) / 2
+        debug_text = f"Distance: {avg_distance:.2f} | Speed: {speed:.2f}"
+        text_surface = font.render(debug_text, True, WHITE)
         screen.blit(text_surface, (10, 10))
 
 
-# Setup
 sun = Circle((WIDTH // 2, HEIGHT // 2), radius=30, color=YELLOW)
 vehicle = Vehicle((300, 500), 55)
 
-# Main loop
 running = True
 while running:
     for event in pygame.event.get():
